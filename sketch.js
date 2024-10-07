@@ -168,12 +168,12 @@ class Pipe {
     }
 
     show() {
-        fill(0, 128, 0); // Darker green color for the pipe body
+        fill(150, 0, 150); // Darker green color for the pipe body
         rect(this.x, 0, this.w, this.top); // Top pipe
         rect(this.x, height - this.bottom, this.w, this.bottom); // Bottom pipe
         
         // Draw the horizontal caps/rims
-        fill(144, 238, 144); // Lighter green for the rims
+        fill(238, 144, 238); // Lighter green for the rims
         let rimWidth = this.w + 10; // Increase the width of the rim beyond the pipe width
         let rimX = this.x - (rimWidth - this.w) / 2; // Centers the extra width on both sides of the pipe
 
