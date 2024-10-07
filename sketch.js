@@ -1,5 +1,6 @@
 let bird;
 let pipes = [];
+let clouds = [];
 let score = 0;
 let highestScore = 0;
 let gap = 180; // Increased gap between the pipes
@@ -22,7 +23,7 @@ function setup() {
 }
 
 function draw() {
-    background(70, 197, 206);
+    background(150, 40, 206);
     
     if (gameStarted && !gamePaused) {
         // Hide buttons when the game is running
@@ -109,6 +110,28 @@ function birdUp() {
 // Trigger bird to jump when mouse or touch is pressed
 function mousePressed() {
     birdUp(); // Same function will handle mouse clicks and touch events
+}
+
+class Cloud {
+    constructor() {
+        this.x = random(width, width * 2); // Clouds start off-screen to the right
+        this.y = random(50, height / 3);   // Cloud height is randomly set in the upper third of the screen
+        this.size = random(50, 120);       // Random cloud size
+        this.speed = random(0.5, 2);       // Cloud speed is slower than pipes
+    }
+
+    show() {
+        fill(255, 155, 255, 175); // White clouds with a little transparency
+        noStroke();               // No outline for clouds
+        ellipse(this.x, this.y, this.size, this.size / 2); // Ellipse for cloud shape
+    }
+
+    update() {
+        this.x -= this.speed; // Move the cloud to the left
+        if (this.x < -this.size) {
+            this.x = width + this.size; // Reset cloud position once it moves off-screen
+        }
+    }
 }
 
 class Bird {
