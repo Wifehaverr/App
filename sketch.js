@@ -19,11 +19,6 @@ function setup() {
     pauseButton = createButton('Pause');
     pauseButton.position((width / 2) + 10, height / 2 - 20); // Position next to the start button
     pauseButton.mousePressed(pauseGame);
-    
-    // Add touch event to control the bird
-    let touchButton = createButton('Tap to Flap');
-    touchButton.position((width / 2) - 50, height - 100); // Position at the bottom
-    touchButton.mousePressed(birdUp);
 }
 
 function draw() {
@@ -109,6 +104,11 @@ function birdUp() {
     } else {
         startGame(); // Start the game when tapped
     }
+}
+
+// Trigger bird to jump when mouse or touch is pressed
+function mousePressed() {
+    birdUp(); // Same function will handle mouse clicks and touch events
 }
 
 class Bird {
