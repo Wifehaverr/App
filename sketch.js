@@ -23,7 +23,7 @@ function setup() {
 }
 
 function draw() {
-    background(150, 40, 206);
+    background(206, 186, 206);
     
     if (gameStarted && !gamePaused) {
         // Hide buttons when the game is running
@@ -121,7 +121,7 @@ class Cloud {
     }
 
     show() {
-        fill(255, 155, 255, 175); // White clouds with a little transparency
+        fill(255, 230, 255, 175); // White clouds with a little transparency
         noStroke();               // No outline for clouds
         ellipse(this.x, this.y, this.size, this.size / 2); // Ellipse for cloud shape
     }
