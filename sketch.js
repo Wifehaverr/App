@@ -1,37 +1,5 @@
 let bird;
 let pipes = [];
-let gravity = 0.6;
-
-function setup() {
-    createCanvas(400, 600);
-    bird = new Bird();
-    pipes.push(new Pipe());
-}
-
-function draw() {
-    background(135, 206, 250);
-    bird.update();
-    bird.show();
-
-    if (frameCount % 60 == 0) {
-        pipes.push(new Pipe());
-    }
-
-    for (let i = pipes.length - 1; i >= 0; i--) {
-        pipes[i].show();
-        pipes[i].update();
-        if (pipes[i].offscreen()) {
-            pipes.splice(i, 1);
-        }
-        if (pipes[i].hits(bird)) {
-            console.log("HIT");
-        }
-    }
-}
-
-function keyPressed() {
-    if (key == ' ') {
-        bird.up();
 let score = 0;
 let highestScore = 0;
 let gap = 180; // Increased gap between the pipes
@@ -93,7 +61,6 @@ function draw() {
                 highestScore = max(score, highestScore);
                 pipes[i].passedPipe = true; // Mark this pipe as passed to avoid multiple increments
             }
-            
         }
         
         bird.update();
@@ -148,9 +115,6 @@ class Bird {
     constructor() {
         this.y = height / 2;
         this.x = 64;
-        this.width = 30;
-        this.height = 30;
-        this.x = 50;
         this.size = 20;
         this.gravity = 0.4;
         this.lift = -15; // Increased lift to make the bird stay in the air longer
@@ -158,35 +122,6 @@ class Bird {
     }
 
     show() {
-        fill(255, 0, 0);
-        rect(this.x, this.y, this.width, this.height);
-    }
-
-    up() {
-        this.velocity = -10;
-    }
-
-    update() {
-        this.velocity += gravity;
-        this.y += this.velocity;
-        this.y = constrain(this.y, 0, height - this.height);
-    }
-}
-
-class Pipe {
-    constructor() {
-        this.top = random(50, 200);
-        this.bottom = random(50, 200);
-        this.x = width;
-        this.w = 20;
-        this.speed = 6;
-        this.scored = false;
-    }
-
-    show() {
-        fill(0, 255, 0);
-        rect(this.x, 0, this.w, this.top);
-        rect(this.x, height - this.bottom, this.w, this.bottom);
         // Draw the bird with specified colors
         fill(255, 204, 0); // Yellow body
         ellipse(this.x, this.y, this.size, this.size); // Body
@@ -202,20 +137,18 @@ class Pipe {
     }
 
     update() {
-        if (gameStarted) { // Only update if the game is started
-            this.velocity += this.gravity;
-            this.y += this.velocity;
+        this.velocity += this.gravity;
+        this.y += this.velocity;
 
-            // Check boundaries
-            if (this.y > height) {
-                this.y = height;
-                resetGame();
-            }
+        // Check boundaries
+        if (this.y > height) {
+            this.y = height;
+            resetGame();
+        }
 
-            if (this.y < 0) {
-                this.y = 0;
-                resetGame();
-            }
+        if (this.y < 0) {
+            this.y = 0;
+            resetGame();
         }
     }
 
@@ -223,6 +156,7 @@ class Pipe {
         this.velocity += this.lift;
     }
 }
+
 class Pipe {
     constructor() {
         this.top = random(50, height / 2 - gap);
@@ -234,18 +168,13 @@ class Pipe {
     }
 
     show() {
-        // Draw the darker green body
         fill(0, 128, 0); // Darker green color for the pipe body
         rect(this.x, 0, this.w, this.top); // Top pipe
         rect(this.x, height - this.bottom, this.w, this.bottom); // Bottom pipe
-
+        
         // Draw the horizontal caps/rims
         fill(144, 238, 144); // Lighter green for the rims
-        
-        // Width of the rim (increase this value)
-        let rimWidth = this.w + 10; // Increase the width of the rim beyond the pipe width (wider by 20 pixels)
-        
-        // Adjust x position to center the wider rims
+        let rimWidth = this.w + 10; // Increase the width of the rim beyond the pipe width
         let rimX = this.x - (rimWidth - this.w) / 2; // Centers the extra width on both sides of the pipe
 
         // Top pipe rim (horizontal)
@@ -264,13 +193,8 @@ class Pipe {
     }
 
     hits(bird) {
-        return (bird.y < this.top || bird.y + bird.height > height - this.bottom) && (bird.x + bird.width > this.x && bird.x < this.x + this.w);
-        if (bird.y < this.top || bird.y > height - this.bottom) {
-            if (bird.x + bird.size / 2 > this.x && bird.x - bird.size / 2 < this.x + this.w) {
-                return true;
-            }
-        }
-        return false;
+        return (bird.y < this.top || bird.y + bird.size > height - this.bottom) &&
+               (bird.x + bird.size / 2 > this.x && bird.x - bird.size / 2 < this.x + this.w);
     }
 
     passed(bird) {
@@ -287,6 +211,4 @@ function keyPressed() {
     if (key === 'Escape') {
         pauseGame(); // Pause the game when Esc is pressed
     }
-}
-
 }
